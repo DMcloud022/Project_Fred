@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Project Analysis System</h1>
+<form id="analysis-form" enctype="multipart/form-data">
+    <div>
+        <label for="file">Upload File:</label>
+        <input type="file" id="file" name="file" accept=".txt,.pdf,.doc,.docx">
+    </div>
+    <div>
+        <label for="text">Or Enter Text:</label>
+        <textarea id="text" name="text" rows="5" cols="50"></textarea>
+    </div>
+    <button type="submit">Analyze</button>
+</form>
+
+<div id="results" style="display: none;">
+    <h2>Analysis Results</h2>
+    <div id="requirements"></div>
+    <div id="development-process"></div>
+</div>
+
+<script>
+document.getElementById('analysis-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    var formData = new FormData(this);
+    
+    fetch('/', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            alert('Error: ' + data.error);
+        } else {
+            document.getElementById('requirements').innerHTML = '<h3>Requirements:</h3><p>' + data.requirements + '</p>';
+            document.getElementById('development-process').innerHTML = '<h3>Development Process:</h3><p>' + data.development_process + '</p>';
+            document.getElementById('results').style.display = 'block';
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+    });
+});
+</script>
+{% endblock %}

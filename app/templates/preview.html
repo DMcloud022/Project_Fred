@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Preview</h1>
+<div id="preview-content">
+    {{ content | safe }}
+</div>
+<button id="download-btn">Download PDF</button>
+
+<script>
+    // Add JavaScript for download functionality
+</script>
+{% endblock %}
